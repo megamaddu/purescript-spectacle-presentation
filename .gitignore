@@ -1,0 +1,10 @@
+node_modules/
+bower_components/
+output/
+output_webpack/
+dist/
+static/dist
+.psc*
+npm-debug.log
+**DS_Store
+.vscode/

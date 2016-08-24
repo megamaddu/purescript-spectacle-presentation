@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'purescript';
+  src: url("/fonts/purescript.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.purescript-icon::before {
+  font-family: "purescript";
+  font-size: 3.7rem;
+  text-rendering: optimizeLegibility;
+  content: "\e801";
+  margin: 0 0 0 1.7rem;
+}
