@@ -135,7 +135,7 @@ view =
       , contentSlide """
         <div>So what is PureScript?</div>
         <div>Typed, Pure, Functional language, targeting JavaScript (or more specifically, CommonJS)</div>
-        <div>(and in the future that will likely be newer JavaScript modules)</div>
+        <div>(and in the future that will likely be ES6 modules)</div>
         """ ##
           [ list ##
             let
@@ -171,7 +171,8 @@ view =
           ]
 
       , sectionTitleSlide green "Typed" """
-        So what do I mean by "Typed"?
+        <div>So what do I mean by "Typed"?</div>
+        <div># drink #</div>
         """
 
       , contentSlide """
@@ -231,6 +232,7 @@ function average (nums) {
 
       , contentSlide """
         <div>Ok.. how about now? (stealing from Jamison!)</div>
+        <div># drink #</div>
         <div>nope.. JS does nothing to help us here</div>
         <div>`average2` looks the same as `average` from the outside..</div>
         """ ##
@@ -306,12 +308,14 @@ function average2 (nums) {
           ]
 
       , sectionTitleSlide stormy "Code" """
-        Some quick code examples...
+        <div>Some quick code examples...</div>
+        <div># drink #</div>
         """
 
       , contentSlide """
-        <div>average -- ignore implementation, note the type -- no effects!</div>
+        <div>here's average again -- ignore implementation, note the type -- no effects allowed!</div>
         <div>types can also change behavior -- note when using Int (+) changes</div>
+        <div>classes (of types)!  not to be confused with JavaScript/Java/C# classes</div>
         """ ##
           [ list ! style [ "listStyleType" /\ "none" ] ##
             [ appear # listItem # smallCodePane "haskell" """
@@ -326,6 +330,7 @@ average nums = foldl (+) 0 nums / length nums
           ]
 
       , contentSlide """
+        <div>ok, so far only built in types -- how do we make "types for the developer"?</div>
         <div>type alias -- records</div>
         <div>newtype wrappers</div>
         """ ##
@@ -388,6 +393,7 @@ showLoginStatus (FullAccount { name }) =
 
       , sectionTitleSlide pink "Pux" """
         <div>What about Pux?</div>
+        <div># drink #</div>
         <div>"A PureScript interface to React."</div>
         <div>Quick disclaimer: probably PureScript's most active space</div>
         <div>purescript-react, Thermite, Halogen, Pux, & more..</div>
@@ -479,7 +485,9 @@ view =
           ]
 
       , contentSlide """
-        <div>Code for importing a React component into Pux</div>
+        <div>how do we get these things into PureScript?</div>
+        <div># drink #</div>
+        <div>here's all the code for importing a React component into Pux</div>
         """ ##
           [ layout ##
             [ layoutFit # smallCodePane "haskell" """
@@ -500,7 +508,7 @@ exports.codePane =
           ]
 
       , contentSlide """
-        <div>toReact</div>
+        <div>what about using Pux components in a React app?</div>
         <div>here's normal app start</div>
         """ ##
           [ psCode """
@@ -516,8 +524,8 @@ main = do
             """]
 
       , contentSlide """
-        <div>toReact</div>
         <div>here's an export for use in a JS app</div>
+        <div>toReact</div>
         """ ##
           [ psCode """
 toJSComponent = do
@@ -532,7 +540,8 @@ toJSComponent = do
             """]
 
       , sectionTitleSlide darkBlue "Resources" """
-        Resources...
+        <div>Resources...</div>
+        <div># drink #</div>
         """
 
       , contentSlide """
@@ -552,7 +561,7 @@ toJSComponent = do
           ]
 
       , contentSlide """
-        Community...
+        <div>Community...</div>
         """ ##
           [ heading' ! size 5 #> "Community"
           , resourceList
@@ -563,7 +572,7 @@ toJSComponent = do
           ]
 
       , contentSlide """
-        This presentation...
+        <div>This presentation...</div>
         """ ##
           [ heading' ! size 5 #> "This Presentation"
           , resourceList
@@ -574,7 +583,8 @@ toJSComponent = do
           ]
 
       , contentSlide """
-        About me...
+        <div>About me...</div>
+        <div># drink #</div>
         """ ##
           [ heading' ! size 5 #> "Hi, my name is Michael Trotter"
           , resourceList
