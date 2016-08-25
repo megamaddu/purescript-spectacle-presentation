@@ -113,7 +113,10 @@ view =
           ]
 
     slides =
-      [ contentSlide "Hello!" ##
+      [ contentSlide """
+        Hello! How is everyone?
+        Let's talk about PureScript..
+        """ ##
         [ titleHeading ##
           [ span ! style [ fg stormy ] #> "PureScript "
           , span ! style [ boldFont ] #> "&"
@@ -127,26 +130,44 @@ view =
         ]
 
       , contentSlide """
-
+        <p>So what is PureScript?</p>
+        <p>Typed, Pure, Functional language, targeting JavaScript (or more specifically, CommonJS)</p>
+        <p>(and in the future that will likely be newer JavaScript modules)</p>
         """ ##
           [ list ##
-            [ listItem # text ! textSize "5rem" ! style [ fg green ] #> "Typed"
-            , listItem # text ! textSize "5rem" ! style [ fg red ] #> "Pure"
-            , listItem # text ! textSize "5rem" ! style [ fg orange ] #> "Functional"
-            , appear # listItem # text ! textSize "5rem" ##
-              let
-                tn = span ! style [ fg stormy, fontSize "2rem" ]
-                tb = span ! style [ fg purple ]
-              in
-                [ tn #> "targets "
-                , tb #> "JavaScript"
-                , tn # appear # span #> " (CommonJS)"
-                ]
+            let
+              appearingItem color attrs children =
+                appear # listItem # (text ! textSize "5rem" ! style [ fg color, lightFont ]) attrs children
+            in
+              [ appearingItem green #> "Typed"
+              , appearingItem red #> "Pure"
+              , appearingItem orange #> "Functional"
+              , appearingItem purple ##
+                let
+                  tn = span ! style [ fg stormy, fontSize "2rem", boldFont ]
+                in
+                  [ tn #> "targets "
+                  , span #> "JavaScript"
+                  , tn # appear # span #> " (CommonJS)"
+                  ]
+              ]
+          ]
+
+      , contentSlide """
+        <p>To compare, PureScript is..</p>
+        <p>..similar to Haskell, but lighter (no runtime) and has less type system features</p>
+        <p>..lighter weight than Elm (no runtime) and more flexible</p>
+        <p>..more functional in style than TypeScript, but otherwise very similar</p>
+        """ ##
+          [ list ##
+            [ listItem #> "..similar to Haskell, but lighter (no runtime) and has less type system features"
+            , listItem #> "..lighter weight than Elm (no runtime) and more flexible"
+            , listItem #> "..more functional in style than TypeScript, but otherwise very similar"
             ]
           ]
 
       , sectionTitleSlide green "Typed" """
-        So what do we mean by "Typed"
+        So what do I mean by "Typed"?
         """
 
       , contentSlide """
