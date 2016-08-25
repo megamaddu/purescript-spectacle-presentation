@@ -158,15 +158,15 @@ view =
 
       , contentSlide """
         <div>To compare, PureScript is..</div>
-        <div>..similar to Haskell, but lighter (no runtime) and has less type system features</div>
         <div>..lighter weight than Elm (no runtime) and more flexible</div>
         <div>..more functional in style than TypeScript, but otherwise very similar</div>
+        <div>..similar to Haskell, but lighter (no runtime) and has less type system features</div>
         """ ##
           [ heading' ! size 3 #> "For comparison, PureScript is.."
           , list ! style [ "listStyleType" /\ "none" ] ##
-            [ appear # listItem ! margin "1rem 0" #> "..similar to Haskell, but lighter (no runtime) and has less type system features"
-            , appear # listItem ! margin "1rem 0" #> "..lighter weight than Elm (no runtime) and more flexible"
+            [ appear # listItem ! margin "1rem 0" #> "..lighter weight than Elm (no runtime) and more flexible"
             , appear # listItem ! margin "1rem 0" #> "..more functional in style than TypeScript, but otherwise very similar"
+            , appear # listItem ! margin "1rem 0" #> "..similar to Haskell, but lighter (no runtime) and has less type system features"
             ]
           ]
 
@@ -218,7 +218,7 @@ view =
         <div>consider this JS function.. is `average` pure?</div>
         <div>Yep!</div>
         """ ##
-          [ appear # jsCode """
+          [ jsCode """
 function average (nums) {
   let total = 0
   nums.forEach((num) => {
@@ -234,7 +234,7 @@ function average (nums) {
         <div>nope.. JS does nothing to help us here</div>
         <div>`average2` looks the same as `average` from the outside..</div>
         """ ##
-          [ appear # jsCode """
+          [ jsCode """
 function average2 (nums) {
   let total = 0
   nums.forEach((num) => {
@@ -265,6 +265,10 @@ function average2 (nums) {
 
       , contentSlide """
         <div>Given that.. what do these functions do?</div>
+        <div>read window.location</div>
+        <div>Date.now</div>
+        <div>Unit?</div>
+        <div>ajax!</div>
         """ ##
           [ appear # psCode "foo :: Eff (dom :: DOM) Location"
           , appear # psCode "bar :: Eff (now :: NOW) Instant"
@@ -357,6 +361,31 @@ parseEmail emailString =
             ]
           ]
 
+      , contentSlide """
+        <div>data types are like enums, but with super powers</div>
+        """ ##
+          [ list ! style [ "listStyleType" /\ "none" ] ##
+            [ appear # listItem # smallCodePane "haskell" """
+data AccountType = Admin | Employee | Customer
+              """
+            , appear # listItem # smallCodePane "haskell" """
+data User
+  = Anonymous
+  | Guest { email :: Maybe Email }
+  | FullAccount { email :: Email, name :: String }
+              """
+            , appear # listItem # smallCodePane "haskell" """
+showLoginStatus :: User -> String
+showLoginStatus Anonymous =
+  "Login here!"
+showLoginStatus (Guest { email }) =
+  maybe "Subscribe!" (\_ -> "Create an account!") email
+showLoginStatus (FullAccount { name }) =
+  "Welcome back, " <> name <> "!"
+              """
+            ]
+          ]
+
       , sectionTitleSlide pink "Pux" """
         <div>What about Pux?</div>
         <div>"A PureScript interface to React."</div>
@@ -391,6 +420,18 @@ view count =
           ]
 
       , contentSlide """
+        <div>For those who don't know -- this is a slide with Spectacle</div>
+        """ ##
+          [ jsCode """
+const View = () => (
+  <Slide bgColor={white}>
+    <CodePane source="...code..." />
+  </Slide>
+)
+            """
+          ]
+
+      , contentSlide """
         <div>Then what makes Pux unique: React, particularly toReact & fromReact</div>
         <div>Here's a slide</div>
         """ ##
@@ -403,10 +444,28 @@ view =
           ]
 
       , contentSlide """
+        <div>Root spectacle app in JS</div>
+        """ ##
+          [ smallCodePane "haskell" """
+const View = () => (
+  <Spectacle theme={theme}>
+    <Deck
+      progress="bar"
+      transition={["slide", "slide"]}
+      transitionDuration={500}
+    >
+      {slides}
+    </Deck>
+  </Spectacle>
+)
+            """
+          ]
+
+      , contentSlide """
         <div>And here's the root slideshow view</div>
         <div>notice ! and # instead of array pairs</div>
         """ ##
-          [ psCode """
+          [ smallCodePane "haskell" """
 view =
   spectacle
     ! slideTheme
