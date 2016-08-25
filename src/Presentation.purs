@@ -54,14 +54,16 @@ view =
         { primary: stormy
         , secondary: stormy
         , tertiary: blue
-        , quartenary: stormy }
+        , quartenary: stormy
+        }
       , fonts:
         { primary: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif"
         , secondary: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif"
-        , tertiary: "Ahamono,Menlo,monospace" } }
+        , tertiary: "Ahamono,Menlo,monospace"
+        }
+      }
 
-    assets =
-      {}
+    assets = {}
 
     link' = link ! style [ fg blue ] ! target "_blank"
     heading' = heading ! style [ lightFont ]
@@ -105,6 +107,7 @@ view =
 
     resourceList resources =
       list ! style [ "listStyleType" /\ "none" ] ## resources
+
     resource title author url =
       listItem # link' ! href url # blockQuote #
         quote ##
@@ -130,9 +133,9 @@ view =
         ]
 
       , contentSlide """
-        <p>So what is PureScript?</p>
-        <p>Typed, Pure, Functional language, targeting JavaScript (or more specifically, CommonJS)</p>
-        <p>(and in the future that will likely be newer JavaScript modules)</p>
+        <div>So what is PureScript?</div>
+        <div>Typed, Pure, Functional language, targeting JavaScript (or more specifically, CommonJS)</div>
+        <div>(and in the future that will likely be newer JavaScript modules)</div>
         """ ##
           [ list ##
             let
@@ -154,15 +157,16 @@ view =
           ]
 
       , contentSlide """
-        <p>To compare, PureScript is..</p>
-        <p>..similar to Haskell, but lighter (no runtime) and has less type system features</p>
-        <p>..lighter weight than Elm (no runtime) and more flexible</p>
-        <p>..more functional in style than TypeScript, but otherwise very similar</p>
+        <div>To compare, PureScript is..</div>
+        <div>..similar to Haskell, but lighter (no runtime) and has less type system features</div>
+        <div>..lighter weight than Elm (no runtime) and more flexible</div>
+        <div>..more functional in style than TypeScript, but otherwise very similar</div>
         """ ##
-          [ list ##
-            [ listItem #> "..similar to Haskell, but lighter (no runtime) and has less type system features"
-            , listItem #> "..lighter weight than Elm (no runtime) and more flexible"
-            , listItem #> "..more functional in style than TypeScript, but otherwise very similar"
+          [ heading' ! size 3 #> "For comparison, PureScript is.."
+          , list ! style [ "listStyleType" /\ "none" ] ##
+            [ appear # listItem ! margin "1rem 0" #> "..similar to Haskell, but lighter (no runtime) and has less type system features"
+            , appear # listItem ! margin "1rem 0" #> "..lighter weight than Elm (no runtime) and more flexible"
+            , appear # listItem ! margin "1rem 0" #> "..more functional in style than TypeScript, but otherwise very similar"
             ]
           ]
 
@@ -171,11 +175,11 @@ view =
         """
 
       , contentSlide """
-        <p>So what do we mean by "Typed"</p>
-        <p>...read slide...</p>
-        <p>These are types for the programmer, not the computer.</p>
-        <p>Contrast with JavaScript types ('cause it has them!):</p>
-        <p>Number, String, Boolean, Object</p>
+        <div>...read slide...</div>
+        <div>These are types for the programmer, not the computer.</div>
+        <div>Contrast with JavaScript types ('cause it has them!):</div>
+        <div>Number, String, Boolean, Object</div>
+        <div>If the types are there anyway, we should be explicit and make them do more work for us!</div>
         """ ##
           [ blockQuote ##
             [ quote
@@ -206,13 +210,13 @@ view =
           ]
 
       , sectionTitleSlide red "Pure" """
-        <p>Alright, I also said it was "Pure". What does that mean?</p>
+        <div>Alright, I also said it was "Pure". What does that mean?</div>
         """
 
       , contentSlide """
-        <p>Talking about functional purity</p>
-        <p>consider this JS function.. is `average` pure?</p>
-        <p>Yep!</p>
+        <div>Talking about purity in the context of "functional programming"</div>
+        <div>consider this JS function.. is `average` pure?</div>
+        <div>Yep!</div>
         """ ##
           [ appear # jsCode """
 function average (nums) {
@@ -226,11 +230,11 @@ function average (nums) {
           ]
 
       , contentSlide """
-        <p>Ok.. how about now? (stealing from Jamison!)</p>
-        <p>nope.. JS does nothing to help us here</p>
-        <p>`average2` looks the same as `average` from the outside..</p>
+        <div>Ok.. how about now? (stealing from Jamison!)</div>
+        <div>nope.. JS does nothing to help us here</div>
+        <div>`average2` looks the same as `average` from the outside..</div>
         """ ##
-          [ jsCode """
+          [ appear # jsCode """
 function average2 (nums) {
   let total = 0
   nums.forEach((num) => {
@@ -243,10 +247,10 @@ function average2 (nums) {
           ]
 
       , contentSlide """
-        <p>PureScript is "pure" because it uses types to represent side effects (intent).</p>
-        <p>Effects like: localStorage, ajax, global/shared state, randomness, time, ...</p>
-        <p>How does PureScript represent effects?</p>
-        <p>Eff</p>
+        <div>PureScript is "pure" because it uses types to represent side effects (intent).</div>
+        <div>Effects like: localStorage, ajax, global/shared state, randomness, time, ...</div>
+        <div>How does PureScript represent effects?</div>
+        <div>Eff</div>
         """ ##
           [ heading' ! size 4 ! fit #> """PureScript is "pure" because it uses types to represent side effects"""
           , heading' ! size 4 ! fit ##
@@ -260,7 +264,7 @@ function average2 (nums) {
           ]
 
       , contentSlide """
-        <p>Given that.. what do these functions do?</p>
+        <div>Given that.. what do these functions do?</div>
         """ ##
           [ appear # psCode "foo :: Eff (dom :: DOM) Location"
           , appear # psCode "bar :: Eff (now :: NOW) Instant"
@@ -269,18 +273,18 @@ function average2 (nums) {
           ]
 
       , sectionTitleSlide orange "Functional" """
-        <p>Finally, I said PureScript was functional..</p>
+        <div>Finally, I said PureScript was functional..</div>
         """
 
       , contentSlide """
-        <p>What's that mean?</p>
-        <p>"Functional" is very broad: JavaScript, ClojureScript, Reason, Elm, ...</p>
-        <p>Most important concept: separation of data & functions</p>
-        <p>In other words.. no Classes (in the JS/Java/C# sense)!</p>
-        <p>Prefer pure/stateless functions where possible</p>
-        <p>composition (currying)</p>
+        <div>What's that mean?</div>
+        <div>"Functional" is very broad: JavaScript, ClojureScript, Reason, Elm, ...</div>
+        <div>Most important concept: separation of data & functions</div>
+        <div>In other words.. no Classes (in the JS/Java/C# sense)!</div>
+        <div>Prefer pure/stateless functions where possible</div>
+        <div>composition (currying)</div>
         """ ##
-          [ heading' ! size 4 #> """"Functional" is very broad..."""
+          [ heading' ! size 4 #> """...but "Functional" is very broad..."""
           , list ##
             [ appear # listItem #> "JavaScript"
             , appear # listItem #> "ClojureScript"
@@ -302,20 +306,13 @@ function average2 (nums) {
         """
 
       , contentSlide """
+        <div>average -- ignore implementation, note the type -- no effects!</div>
+        <div>types can also change behavior -- note when using Int (+) changes</div>
         """ ##
           [ list ! style [ "listStyleType" /\ "none" ] ##
             [ appear # listItem # smallCodePane "haskell" """
 average :: Array Number -> Number
 average nums = foldl (+) 0.0 nums / toNumber (length nums)
-              """
-            , appear # listItem # smallCodePane "haskell" """
-type User = { email :: String }
-              """
-            , appear # listItem # smallCodePane "haskell" """
-newtype Email = Email String
-              """
-            , appear # listItem # smallCodePane "haskell" """
-type User = { email :: Email }
               """
             , appear # listItem # smallCodePane "haskell" """
 average :: Array Int -> Int
@@ -324,18 +321,54 @@ average nums = foldl (+) 0 nums / length nums
             ]
           ]
 
+      , contentSlide """
+        <div>type alias -- records</div>
+        <div>newtype wrappers</div>
+        """ ##
+          [ list ! style [ "listStyleType" /\ "none" ] ##
+            [ appear # listItem # smallCodePane "haskell" """
+type User = { email :: String }
+              """
+            , appear # listItem # smallCodePane "haskell" """
+newtype Email = Email String
+              """
+            , appear # listItem # smallCodePane "haskell" """
+someEmail :: Email
+someEmail = Email "react@rally.com"
+              """
+            , appear # listItem # smallCodePane "haskell" """
+type User = { email :: Email }
+              """
+            ]
+          ]
+
+      , contentSlide """
+        <div>validation</div>
+        <div>hiding type constructors</div>
+        """ ##
+          [ list ! style [ "listStyleType" /\ "none" ] ##
+            [ appear # listItem # smallCodePane "haskell" """
+parseEmail :: String -> Either String Email
+parseEmail emailString =
+  if test emailRegex emailString
+    then Right (Email emailString)
+    else Left "Invalid email address."
+              """
+            ]
+          ]
+
       , sectionTitleSlide pink "Pux" """
-        <p>What about Pux?</p>
-        <p>"A PureScript interface to React."</p>
-        <p>Quick disclaimer: probably PureScript's most active space</p>
-        <p>purescript-react, Thermite, Halogen, Pux, & more..</p>
-        <p>Pux is the simplest (slight safety tradeoffs too)</p>
+        <div>What about Pux?</div>
+        <div>"A PureScript interface to React."</div>
+        <div>Quick disclaimer: probably PureScript's most active space</div>
+        <div>purescript-react, Thermite, Halogen, Pux, & more..</div>
+        <div>Pux is the simplest (slight safety tradeoffs too)</div>
         """
 
       , contentSlide """
-        <p>Elm Architecture + PureScript + React = Pux</p>
-        <p>But I'm not going to cover the Elm Architecture.. lots out there on that already</p>
-        <p>Then what makes Pux unique?</p>
+        <div>Elm Architecture + PureScript + React = Pux</div>
+        <div>But I'm not going to cover the Elm Architecture.. lots out there on that already</div>
+        <div>Then what makes Pux unique?</div>
         """ ##
           [ smallCodePane "haskell" """
 data Action = Increment | Decrement
@@ -358,17 +391,36 @@ view count =
           ]
 
       , contentSlide """
-        <p>Then what makes Pux unique: React, particularly toReact & fromReact</p>
+        <div>Then what makes Pux unique: React, particularly toReact & fromReact</div>
+        <div>Here's a slide</div>
         """ ##
           [ psCode """
 view =
-  slide [ bgColor white ]
+  slide
+    [ bgColor white ]
     [ codePane "...code..." ]
             """
           ]
 
       , contentSlide """
-        <p>Code for importing a React component into Pux</p>
+        <div>And here's the root slideshow view</div>
+        <div>notice ! and # instead of array pairs</div>
+        """ ##
+          [ psCode """
+view =
+  spectacle
+    ! slideTheme
+    ! preload assets
+    # deck
+      ! progress Bar
+      ! transition [ Slide, Slide ]
+      ! transitionDuration (Milliseconds 500.0)
+      ## slides
+            """
+          ]
+
+      , contentSlide """
+        <div>Code for importing a React component into Pux</div>
         """ ##
           [ layout ##
             [ layoutFit # smallCodePane "haskell" """
@@ -389,8 +441,8 @@ exports.codePane =
           ]
 
       , contentSlide """
-        <p>toReact</p>
-        <p>here's normal app start</p>
+        <div>toReact</div>
+        <div>here's normal app start</div>
         """ ##
           [ psCode """
 main = do
@@ -405,8 +457,8 @@ main = do
             """]
 
       , contentSlide """
-        <p>toReact</p>
-        <p>here's an export for use in a JS app</p>
+        <div>toReact</div>
+        <div>here's an export for use in a JS app</div>
         """ ##
           [ psCode """
 toJSComponent = do
@@ -425,11 +477,11 @@ toJSComponent = do
         """
 
       , contentSlide """
-        <p>Learn PureScript</p>
-        <p>Haskell Programming is ideal start -- it teaches you everything you need to know and most of the book applies to PureScript as well</p>
-        <p>PureScript by Example -- language author's book, he keeps it up to date -- also very good but a little less introductory material -- a good followup to after the first few HaskellBook chapters</p>
-        <p>From Callback to Future -- a great intoduction to concepts without the baggage of "scary" words or foreign syntaxes -- great read on "why would anyone want this"</p>
-        <p>Alexis King's (or Lexi Lambda) blog has a lot of good content, but this post specifically addresses "how much abstraction is too much" -- a good read if you've been down this road before and found abstraction daunting -- take a little at a time</p>
+        <div>Learn PureScript</div>
+        <div>Haskell Programming is ideal start -- it teaches you everything you need to know and most of the book applies to PureScript as well</div>
+        <div>PureScript by Example -- language author's book, he keeps it up to date -- also very good but a little less introductory material -- a good followup to after the first few HaskellBook chapters</div>
+        <div>From Callback to Future -- a great intoduction to concepts without the baggage of "scary" words or foreign syntaxes -- great read on "why would anyone want this"</div>
+        <div>Alexis King's (or Lexi Lambda) blog has a lot of good content, but this post specifically addresses "how much abstraction is too much" -- a good read if you've been down this road before and found abstraction daunting -- take a little at a time</div>
         """ ##
           [ heading' ! size 5 #> "Learn PureScript"
           , resourceList
