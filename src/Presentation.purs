@@ -579,6 +579,7 @@ toJSComponent = do
             [ resource "Deployed Slideshow" "purescript-react-rally.surge.sh" "http://purescript-react-rally.surge.sh"
             , resource "Slideshow Code" "github.com/spicydonuts/purescript-spectacle-presentation" "https://github.com/spicydonuts/purescript-spectacle-presentation"
             , resource "purescript-pux-spectacle" "github.com/spicydonuts/purescript-pux-spectacle" "https://github.com/spicydonuts/purescript-spectacle"
+            , resource "Pux Docs" "www.alexmingoia.com/purescript-pux/" "http://www.alexmingoia.com/purescript-pux/"
             ]
           ]
 
