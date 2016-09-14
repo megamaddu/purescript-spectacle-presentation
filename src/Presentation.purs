@@ -1,24 +1,39 @@
 module App.Presentation where
 
+-- | PureScript modules begin with imports.
+-- | Notice they are very explicit and either import
+-- | a specific thing by name or a group of things namespaced
+-- | under an alias (like `import Pux.Html as H`).
+-- | The compiler allows one "open" import (like `import Prelude`)
+-- | which imports everything declared by that module into scope.
+-- | Most modules reserve this for Prelude or Batteries (a larger Prelude)
+-- | because they are used frequently and people begin to recognize imports
+-- | from them quickly.  I left everything here explicit so there's no magic.
+-- | If you want to know more about any of these imported modules,
+-- | pursuit.purescript.org is a great place to start.
 import Pux.Html as H
-import Data.Options ((:=))
 import Data.Time.Duration (Milliseconds(Milliseconds))
 import Data.Tuple.Nested ((/\))
 import Prelude (Unit, (<>))
 import Pux.Html (Attribute, withAttr, withChild, withChildren, Html, span, i)
 import Pux.Html.Attributes (size, className, target, style)
-import Spectacle (deck, spectacle, slide, text, quote, blockQuote, listItem, layoutFit, layout, appear, list, cite, codePane, heading, link)
+import Spectacle (deck, spectacle, slide, text, quote, blockQuote, listItem, layoutFit, layout, appear, list, cite, heading, link)
+import Spectacle as S
 import Spectacle.Attributes (padding, Progress(Bar), Transition(Slide), transitionDuration, transition, progress, preload, textColor, notes, bgColor, textSize, href, fit, margin, source, lang, theme)
 
--- | These helpers make the "html" a bit easier to work with
-withTextChild :: forall a. (Array (Attribute a) -> Array (Html a) -> Html a) -> String -> Html a
-withTextChild comp txt = comp # H.text txt
-
-infixl 1 withAttr as !
-infixr 0 withChild as #
-infixr 0 withTextChild as #>
-infixr 0 withChildren as ##
-
+-- | This is a view function.  There may be many,
+-- | but in this app we only have one.  The name
+-- | of the function is not important, but its
+-- | type is!  We can see it takes no arguments
+-- | and returns `Html Unit`.  Most Pux views
+-- | will be functions from `s -> Html a`, where
+-- | `s` is the type of your application state
+-- | and `a` is the type of actions the view can
+-- | produce.  This one uses `Unit` for the action
+-- | type, the type used to represent nothing.
+-- | It indicates this view produces no meaningful
+-- | actions and any state is self-contained (In
+-- | this case it's managed by Spectacle).
 view :: Html Unit
 view =
   spectacle
@@ -29,7 +44,24 @@ view =
       ! transition [ Slide, Slide ]
       ! transitionDuration (Milliseconds 500.0)
       ## slides
+  -- | And that's the whole app!  Kinda.  Look at the
+  -- | code above as JSX.  `<Spectacle theme={slideTheme} ... etc`.
+  -- | `!` is a helper function which applies an attribute on the
+  -- | right to an element on the left.  It's also chainable since
+  -- | it returns elements.  `#` is a helper function for giving
+  -- | an element a single child.  `##` takes an array of children.
+  -- | These "operator" aliases are actually defined at the bottom
+  -- | of this file, and you can define your own!  Don't go too
+  -- | crazy though 😉
   where
+    -- | This is the "where clause".  Values and functions can
+    -- | defined here and are available both in the function body
+    -- | above and in other definitions below.  Order does not
+    -- | matter.  Where definitions are similar to module
+    -- | definitions, but will not warn if you leave off the type
+    -- | signature the way top-level definitions do.  In a larger
+    -- | project many of these initial definitions would go in
+    -- | config files or a Constants module of some kind.
     white = "white"
     black = "black"
     pink = "#e91e63"
@@ -43,6 +75,11 @@ view =
 
     fg color = "color" /\ color
     bg color = "backgroundColor" /\ color
+    -- | Don't let the `/\` scare you.  It's just another function!
+    -- | You can find it imported above on line 16 from the Tuple
+    -- | module, and it's actually just an alias for the Tuple
+    -- | constructor.  That means you can also write the line
+    -- | above like this: `bg color = Tuple "backgroundColor" color`
 
     fontSize s = "fontSize" /\ s
 
@@ -62,48 +99,93 @@ view =
         , tertiary: "Ahamono,Menlo,monospace"
         }
       }
+    -- | These curly-brace structures are called Records.
+    -- | At runtime they're just JavaScript objects, but
+    -- | PureScript treats them much more strictly at
+    -- | compile time.  They can't be mutated (by PureScript
+    -- | code, so be careful giving them to other libraries
+    -- | as arguments -- there are other types for representing
+    -- | mutable JS data) and the compiler will track the
+    -- | type of each field.
 
     assets = {}
+    -- | I didn't end up using any pictures, so this went
+    -- | unused.  You can put asset urls in here for
+    -- | Spectacle to pre-load.
 
     link' = link ! style [ fg blue ] ! target "_blank"
     heading' = heading ! style [ lightFont ]
+    -- | What's going on here!?  These elements have no
+    -- | children!  PureScript functions are curried,
+    -- | meaning each argument applied to a function
+    -- | actually returns a new function that expects
+    -- | the next argument.  This means these aren't
+    -- | full `Html` elements yet and they can be
+    -- | reused below with different children.
 
     titleHeading = heading' ! size 1
     titleSubHeading = heading' ! size 5
     titleText = text ! style [ lightFont ] ! textSize "20px"
 
     icon kind = i [ className ("fa fa-" <> kind) ] []
+    -- | Here `i` is being passed two arrays, one of Attributes
+    -- | and one of children.  This is the normal Pux element
+    -- | API without the `!` and `#` helper functions.
+    -- | You'll see both used interchangably, depending only
+    -- | on what reads best in each situation.  PureScript
+    -- | code is about expressiveness, backed by strong
+    -- | type system support!
+    -- | There's a new operator too, `<>`.  It's an alias for
+    -- | `append`, and it takes any inputs which are "concatable".
+    -- | In PureScript, most of these abstractions are named
+    -- | after their similar concepts in abstract math, so `<>`
+    -- | actually requires input types in the class Monoid.
+    -- | It's a weird word, but you can substitute it for
+    -- | "concatable" in your head for now.  Strings, Arrays,
+    -- | and Lists are all Monoids, along with many others!
+    -- | This stuff is explained really well in the book linked
+    -- | to below, "Haskell Programming from first principles".
 
     sectionTitleSlide color titleTxt noteTxt =
       slide
         ! bgColor color
         ! notes noteTxt
         # heading' ! size 3 ! textColor white #> titleTxt
+    -- | `sectionTitleSlide` is a helper function that builds
+    -- | a whole slide (we haven't seen whole slides yet, but
+    -- | there are lots more below)!  The slides were getting
+    -- | repetitive and their purpose unclear.  Moving
+    -- | the repetitive bit into a named function makes
+    -- | the code safer and easier to understand at a glance!
+    -- | This particular helper builds the colorful title
+    -- | slides between each section.
 
     contentSlide noteTxt =
       slide
         ! bgColor white
         ! notes noteTxt
 
-    codePane' lg src =
-      codePane
+    codePane l src =
+      S.codePane
         ! textSize "2.2rem"
         ! margin "0 auto"
         ! bgColor white
-        ! lang lg
+        ! lang l
         ! source src
         ## []
-    smallCodePane lg src =
-      codePane
+
+    codePaneSmall l src =
+      S.codePane
         ! textSize "1.4rem"
         ! margin "0 auto 0"
         ! padding "0 1em"
         ! bgColor white
-        ! lang lg
+        ! lang l
         ! source src
         ## []
-    psCode = codePane' "haskell"
-    jsCode = codePane' "javascript"
+
+    js = "javascript"
+    ps = "haskell"
 
     resourceList resources =
       list ! style [ "listStyleType" /\ "none" ] ## resources
@@ -114,6 +196,12 @@ view =
           [ text ! textSize "2rem" ! textColor blue #> title
           , text ! textSize "1.2rem" ! textColor darkBlue #> author
           ]
+    -- | `#>` is like `#`, but it takes a String instead of Html
+    -- | and wraps it in Pux's `text` component.  I probably wouldn't
+    -- | do that in most projects, but this is a content-heavy
+    -- | app with lots of embedded strings.  In a large app I'd probably
+    -- | have it require inputs of some custom type like ContentKey
+    -- | and use that key to look up the translation.  Aren't types cool?
 
     slides =
       [ contentSlide """
@@ -137,7 +225,7 @@ view =
         <div>Typed, Pure, Functional language, targeting JavaScript (or more specifically, CommonJS)</div>
         <div>(and in the future that will likely be ES6 modules)</div>
         """ ##
-          [ list ##
+          [ list ! style [ "listStyleType" /\ "none" ] ##
             let
               appearingItem color attrs children =
                 appear # listItem # (text ! textSize "5rem" ! style [ fg color, lightFont ]) attrs children
@@ -153,6 +241,13 @@ view =
                   , span #> "JavaScript"
                   , tn # appear # span #> " (CommonJS)"
                   ]
+                -- | `let` expressions!  These are kinda like `where`, but
+                -- | a `let` actually returns a value.  You say `let`,
+                -- | declare some variables, then finish it with an `in`,
+                -- | the scope where those variables are visible.  The `let`
+                -- | returns the value the `in` body resolves to.  `let`s
+                -- | are useful for reducing duplication or re-evaluation
+                -- | in an isolated scope.  `where`s are more declarative.
               ]
           ]
 
@@ -219,7 +314,7 @@ view =
         <div>consider this JS function.. is `average` pure?</div>
         <div>Yep!</div>
         """ ##
-          [ jsCode """
+          [ codePane js """
 function average (nums) {
   let total = 0
   nums.forEach((num) => {
@@ -236,7 +331,7 @@ function average (nums) {
         <div>nope.. JS does nothing to help us here</div>
         <div>`average2` looks the same as `average` from the outside..</div>
         """ ##
-          [ jsCode """
+          [ codePane js """
 function average2 (nums) {
   let total = 0
   nums.forEach((num) => {
@@ -262,7 +357,7 @@ function average2 (nums) {
             , appear # span #> ", randomness"
             , appear # span #> ", time..."
             ]
-          , appear # psCode "Eff (EffectRow) ResultType"
+          , appear # codePane ps "Eff (EffectRow) ResultType"
           ]
 
       , contentSlide """
@@ -272,10 +367,10 @@ function average2 (nums) {
         <div>Unit?</div>
         <div>ajax!</div>
         """ ##
-          [ appear # psCode "foo :: Eff (dom :: DOM) Location"
-          , appear # psCode "bar :: Eff (now :: NOW) Instant"
-          , appear # psCode "baz :: Element -> Eff (dom :: DOM) Unit"
-          , appear # psCode "qux :: UserId -> Aff (ajax :: AJAX) User"
+          [ appear # codePane ps "foo :: Eff (dom :: DOM) Location"
+          , appear # codePane ps "bar :: Eff (now :: NOW) Instant"
+          , appear # codePane ps "baz :: Element -> Eff (dom :: DOM) Unit"
+          , appear # codePane ps "qux :: UserId -> Aff (ajax :: AJAX) User"
           ]
 
       , sectionTitleSlide orange "Functional" """
@@ -318,11 +413,11 @@ function average2 (nums) {
         <div>classes (of types)!  not to be confused with JavaScript/Java/C# classes</div>
         """ ##
           [ list ! style [ "listStyleType" /\ "none" ] ##
-            [ appear # listItem # smallCodePane "haskell" """
+            [ appear # listItem # codePaneSmall ps """
 average :: Array Number -> Number
 average nums = foldl (+) 0.0 nums / toNumber (length nums)
               """
-            , appear # listItem # smallCodePane "haskell" """
+            , appear # listItem # codePaneSmall ps """
 average :: Array Int -> Int
 average nums = foldl (+) 0 nums / length nums
               """
@@ -335,17 +430,17 @@ average nums = foldl (+) 0 nums / length nums
         <div>newtype wrappers</div>
         """ ##
           [ list ! style [ "listStyleType" /\ "none" ] ##
-            [ appear # listItem # smallCodePane "haskell" """
+            [ appear # listItem # codePaneSmall ps """
 type User = { email :: String }
               """
-            , appear # listItem # smallCodePane "haskell" """
+            , appear # listItem # codePaneSmall ps """
 newtype Email = Email String
               """
-            , appear # listItem # smallCodePane "haskell" """
+            , appear # listItem # codePaneSmall ps """
 someEmail :: Email
 someEmail = Email "react@rally.com"
               """
-            , appear # listItem # smallCodePane "haskell" """
+            , appear # listItem # codePaneSmall ps """
 type User = { email :: Email }
               """
             ]
@@ -356,7 +451,7 @@ type User = { email :: Email }
         <div>hiding type constructors</div>
         """ ##
           [ list ! style [ "listStyleType" /\ "none" ] ##
-            [ appear # listItem # smallCodePane "haskell" """
+            [ appear # listItem # codePaneSmall ps """
 parseEmail :: String -> Either String Email
 parseEmail emailString =
   if test emailRegex emailString
@@ -370,16 +465,16 @@ parseEmail emailString =
         <div>data types are like enums, but with super powers</div>
         """ ##
           [ list ! style [ "listStyleType" /\ "none" ] ##
-            [ appear # listItem # smallCodePane "haskell" """
+            [ appear # listItem # codePaneSmall ps """
 data AccountType = Admin | Employee | Customer
               """
-            , appear # listItem # smallCodePane "haskell" """
+            , appear # listItem # codePaneSmall ps """
 data User
   = Anonymous
   | Guest { email :: Maybe Email }
   | FullAccount { email :: Email, name :: String }
               """
-            , appear # listItem # smallCodePane "haskell" """
+            , appear # listItem # codePaneSmall ps """
 showLoginStatus :: User -> String
 showLoginStatus Anonymous =
   "Login here!"
@@ -405,7 +500,7 @@ showLoginStatus (FullAccount { name }) =
         <div>But I'm not going to cover the Elm Architecture.. lots out there on that already</div>
         <div>Then what makes Pux unique?</div>
         """ ##
-          [ smallCodePane "haskell" """
+          [ codePaneSmall ps """
 data Action = Increment | Decrement
 
 type State = Int
@@ -428,7 +523,7 @@ view count =
       , contentSlide """
         <div>For those who don't know -- this is a slide with Spectacle</div>
         """ ##
-          [ jsCode """
+          [ codePane js """
 const View = () => (
   <Slide bgColor={white}>
     <CodePane source="...code..." />
@@ -441,7 +536,7 @@ const View = () => (
         <div>Then what makes Pux unique: React, particularly toReact & fromReact</div>
         <div>Here's a slide</div>
         """ ##
-          [ psCode """
+          [ codePane ps """
 view =
   slide
     [ bgColor white ]
@@ -452,7 +547,7 @@ view =
       , contentSlide """
         <div>Root spectacle app in JS</div>
         """ ##
-          [ smallCodePane "haskell" """
+          [ codePaneSmall ps """
 const View = () => (
   <Spectacle theme={theme}>
     <Deck
@@ -471,7 +566,7 @@ const View = () => (
         <div>And here's the root slideshow view</div>
         <div>notice ! and # instead of array pairs</div>
         """ ##
-          [ smallCodePane "haskell" """
+          [ codePaneSmall ps """
 view =
   spectacle
     ! slideTheme
@@ -490,13 +585,13 @@ view =
         <div>here's all the code for importing a React component into Pux</div>
         """ ##
           [ layout ##
-            [ layoutFit # smallCodePane "haskell" """
+            [ layoutFit # codePaneSmall ps """
 -- | Spectacle.purs
 foreign import codePane :: Component
               """
             , layoutFit
               ! style [ "borderLeft" /\ ("1px solid " <> stormy) ]
-              # smallCodePane "javascript" """
+              # codePaneSmall js """
 // Spectacle.js
 var Pux = require("purescript-pux")
 var Spectacle = require("spectacle")
@@ -511,7 +606,7 @@ exports.codePane =
         <div>what about using Pux components in a React app?</div>
         <div>here's normal app start</div>
         """ ##
-          [ psCode """
+          [ codePane ps """
 main = do
   app <- start
     { initialState: 0
@@ -527,7 +622,7 @@ main = do
         <div>here's an export for use in a JS app</div>
         <div>toReact</div>
         """ ##
-          [ psCode """
+          [ codePane ps """
 toJSComponent = do
   comp <- start
     { initialState: 0
@@ -617,3 +712,12 @@ toJSComponent = do
           , i ! className "purescript-icon" #> ""
           ]
       ]
+
+-- | These helpers make the "html" a bit easier to work with.
+withTextChild :: forall a. (Array (Attribute a) -> Array (Html a) -> Html a) -> String -> Html a
+withTextChild comp txt = comp # H.text txt
+
+infixl 1 withAttr as !
+infixr 0 withChild as #
+infixr 0 withTextChild as #>
+infixr 0 withChildren as ##
