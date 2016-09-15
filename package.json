@@ -1,5 +1,5 @@
 {
-  "name": "pux-starter-app",
+  "name": "purescript-spectacle-presentation",
   "version": "8.0.0",
   "description": "Starter Pux application using webpack with hot-reloading.",
   "main": "support/index.js",
@@ -21,12 +21,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/alexmingoia/pux-starter-app.git"
+    "url": "git://github.com/spicydonuts/purescript-spectacle-presentation.git"
   },
-  "author": "Alexander C. Mingoia",
+  "author": "Michael Trotter",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/alexmingoia/pux-starter-app/issues"
+    "url": "https://github.com/spicydonuts/purescript-spectacle-presentation/issues"
   },
   "dependencies": {
     "bower": "^1.7.9",
