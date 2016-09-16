@@ -494,6 +494,7 @@ showLoginStatus (FullAccount { name }) =
         <div>"A PureScript interface to React."</div>
         <div>Quick disclaimer: probably PureScript's most active space</div>
         <div>purescript-react, Thermite, Halogen, Pux, & more..</div>
+        <div>even purescript-elm</div>
         <div>Pux is the simplest (slight safety tradeoffs too)</div>
         """
 
@@ -656,15 +657,27 @@ toJSComponent = do
           , Range (Loc 16 21) []
           , Range (Loc 115 120) []
           , Range (Loc 115 120) [ Note "A case expression could not be determined to cover all inputs. The following additional cases are required to cover all inputs..." ]
-          , Range (Loc 102 110) []
           , Range (Loc 88 100) []
           , Range (Loc 102 102) []
           , Range (Loc 49 62) []
+          , Range (Loc 50 50) []
+          , Range (Loc 51 51) []
           , Range (Loc 52 57) []
+          , Range (Loc 54 54) []
           , Range (Loc 55 55) []
           , Range (Loc 56 56) []
+          , Range (Loc 59 62) []
+          , Range (Loc 125 141) []
           ]
         ## []
+
+      , contentSlide """
+        <div>how about an app with state?</div>
+        """ #
+          iframe
+            ! style [ "width" /\ "100%", "height" /\ "900px", "border" /\ "none" ]
+            ! src "http://localhost:3737"
+            ## []
 
       , sectionTitleSlide darkBlue "Resources" """
         <div>Resources...</div>
@@ -754,6 +767,10 @@ toJSComponent = do
         # heading' ! size 3 ! textColor white ##
           [ H.text "Thank You "
           , i ! className "purescript-icon" #> ""
+          , text ! margin "4rem 0"
+            # link'
+              ! href "http://purescript-strangeloop-2016.surge.sh"
+              #> "purescript-strangeloop-2016.surge.sh"
           ]
       ]
 
