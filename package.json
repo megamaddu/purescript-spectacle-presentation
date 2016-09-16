@@ -41,9 +41,11 @@
     "react-dom": "^15.0.0",
     "rimraf": "^2.5.2",
     "spectacle": "^1.1.2",
+    "spectacle-code-slide": "^0.3.1",
     "webpack": "^1.12.14"
   },
   "devDependencies": {
+    "raw-loader": "^0.5.1",
     "source-map-loader": "^0.1.5",
     "surge": "^0.18.0",
     "webpack-dev-middleware": "^1.6.1",

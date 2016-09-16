@@ -15,11 +15,13 @@ import Pux.Html as H
 import Data.Time.Duration (Milliseconds(Milliseconds))
 import Data.Tuple.Nested ((/\))
 import Prelude (Unit, (<>))
-import Pux.Html (Attribute, withAttr, withChild, withChildren, Html, span, i)
-import Pux.Html.Attributes (size, className, target, style)
+import Pux.Html (Attribute, withAttr, withChild, withChildren, Html, span, i, iframe)
+import Pux.Html.Attributes (size, className, target, style, src)
 import Spectacle (deck, spectacle, slide, text, quote, blockQuote, listItem, layoutFit, layout, appear, list, cite, heading, link)
 import Spectacle as S
 import Spectacle.Attributes (padding, Progress(Bar), Transition(Slide), transitionDuration, transition, progress, preload, textColor, notes, bgColor, textSize, href, fit, margin, source, lang, theme)
+import Spectacle.CodeSlide (codeSlide)
+import Spectacle.CodeSlide.Attributes (code, ranges, Range(..), Loc(..), RangeOption(..))
 
 -- | This is a view function.  There may be many,
 -- | but in this app we only have one.  The name
@@ -216,8 +218,8 @@ view =
         , titleSubHeading #> "a safer, more expressive way to React"
         , text ! margin "4rem 0"
           # link'
-            ! href "http://purescript-react-rally.surge.sh"
-            #> "purescript-react-rally.surge.sh"
+            ! href "http://purescript-strangeloop-2016.surge.sh"
+            #> "purescript-strangeloop-2016.surge.sh"
         ]
 
       , contentSlide """
@@ -257,7 +259,7 @@ view =
         <div>..more functional in style than TypeScript, but otherwise very similar</div>
         <div>..similar to Haskell, but lighter (no runtime) and has less type system features</div>
         """ ##
-          [ heading' ! size 3 #> "For comparison, PureScript is.."
+          [ heading' ! size 4 #> "For comparison, PureScript is.."
           , list ! style [ "listStyleType" /\ "none" ] ##
             [ appear # listItem ! margin "1rem 0" #> "..lighter weight than Elm (no runtime) and more flexible"
             , appear # listItem ! margin "1rem 0" #> "..more functional in style than TypeScript, but otherwise very similar"
@@ -438,7 +440,7 @@ newtype Email = Email String
               """
             , appear # listItem # codePaneSmall ps """
 someEmail :: Email
-someEmail = Email "react@rally.com"
+someEmail = Email "strange@loop.com"
               """
             , appear # listItem # codePaneSmall ps """
 type User = { email :: Email }
@@ -634,6 +636,36 @@ toJSComponent = do
   toReact comp.html
             """]
 
+      , contentSlide """
+        <div>how about an app with state?</div>
+        """ #
+          iframe
+            ! style [ "width" /\ "100%", "height" /\ "900px", "border" /\ "none" ]
+            ! src "http://localhost:3737"
+            ## []
+
+      , codeSlide
+        ! style [ "fontSize" /\ "1rem" ]
+        ! transition []
+        ! lang ps
+        ! code puxGameSrc
+        ! ranges
+          [ Range (Loc 0 159) [ Title "Rock, Paper, Scissors" ]
+          , Range (Loc 125 141) []
+          , Range (Loc 143 148) []
+          , Range (Loc 16 21) []
+          , Range (Loc 115 120) []
+          , Range (Loc 115 120) [ Note "A case expression could not be determined to cover all inputs. The following additional cases are required to cover all inputs..." ]
+          , Range (Loc 102 110) []
+          , Range (Loc 88 100) []
+          , Range (Loc 102 102) []
+          , Range (Loc 49 62) []
+          , Range (Loc 52 57) []
+          , Range (Loc 55 55) []
+          , Range (Loc 56 56) []
+          ]
+        ## []
+
       , sectionTitleSlide darkBlue "Resources" """
         <div>Resources...</div>
         <div># drink #</div>
@@ -667,14 +699,26 @@ toJSComponent = do
           ]
 
       , contentSlide """
+        <div>Libraries...</div>
+        """ ##
+          [ heading' ! size 5 #> "PureScript Libraries"
+          , resourceList
+            [ resource "Pux" "www.alexmingoia.com/purescript-pux/" "http://www.alexmingoia.com/purescript-pux/"
+            , resource "purescript-pux-spectacle" "github.com/spicydonuts/purescript-pux-spectacle" "https://github.com/spicydonuts/purescript-spectacle"
+            , resource "purescript-react" "github.com/purescript-contrib/purescript-react" "https://github.com/purescript-contrib/purescript-react"
+            , resource "purescript-datetime" "github.com/purescript/purescript-datetime" "https://github.com/purescript/purescript-datetime"
+            ]
+          ]
+
+      , contentSlide """
         <div>This presentation...</div>
         """ ##
           [ heading' ! size 5 #> "This Presentation"
           , resourceList
-            [ resource "Deployed Slideshow" "purescript-react-rally.surge.sh" "http://purescript-react-rally.surge.sh"
+            [ resource "Slideshow" "purescript-strangeloop-2016.surge.sh" "http://purescript-strangeloop-2016.surge.sh"
             , resource "Slideshow Code" "github.com/spicydonuts/purescript-spectacle-presentation" "https://github.com/spicydonuts/purescript-spectacle-presentation"
             , resource "purescript-pux-spectacle" "github.com/spicydonuts/purescript-pux-spectacle" "https://github.com/spicydonuts/purescript-spectacle"
-            , resource "Pux Docs" "www.alexmingoia.com/purescript-pux/" "http://www.alexmingoia.com/purescript-pux/"
+            , resource "Pux Rock, Paper, Scissors" "github.com/spicydonuts/pux-rock-paper-scissors" "https://github.com/spicydonuts/pux-rock-paper-scissors"
             ]
           ]
 
@@ -712,6 +756,9 @@ toJSComponent = do
           , i ! className "purescript-icon" #> ""
           ]
       ]
+
+-- | Raw files need to be imported in JS for webpack to spot them.
+foreign import puxGameSrc :: String
 
 -- | These helpers make the "html" a bit easier to work with.
 withTextChild :: forall a. (Array (Attribute a) -> Array (Html a) -> Html a) -> String -> Html a

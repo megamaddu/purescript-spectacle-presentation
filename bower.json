@@ -15,7 +15,8 @@
     "purescript-colors": "^1.0.2",
     "purescript-dom": "^2.0.1",
     "purescript-nullable": "^1.0.1",
-    "purescript-pux-spectacle": "^1.2.0"
+    "purescript-pux-spectacle": "^1.2.0",
+    "purescript-pux-spectacle-codeslide": "^1.0.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^1.0.0"

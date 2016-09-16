@@ -22,7 +22,7 @@ var config = {
       {
         test: /\.purs$/,
         loader: 'purs-loader',
-        exclude: /node_modules/,
+        exclude: /node_modules|examples/,
         query: {
           psc: 'psa',
           pscArgs: {
