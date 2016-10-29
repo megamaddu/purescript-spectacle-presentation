@@ -4,7 +4,7 @@ Presentation introducing PureScript & Pux -- [Video here](https://www.youtube.co
 
 Deployed to [purescript-strangeloop-2016.surge.sh](https://purescript-strangeloop-2016.surge.sh/)
 
-Based on the [Pux Starter App](https://github.com/alexmingoia/pux-starter-app) & powered by [Spectacle](https://github.com/FormidableLabs/spectacle).
+Based on the [Pux Starter App](https://github.com/alexmingoia/pux-starter-app) & powered by [Spectacle](https://github.com/FormidableLabs/spectacle)
 
 ## Getting Started
 
