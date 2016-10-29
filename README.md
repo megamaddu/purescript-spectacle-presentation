@@ -1,6 +1,6 @@
 # purescript-spectacle-presentation
 
-Presentation introducing PureScript & Pux.
+Presentation introducing PureScript & Pux -- [Video here](https://www.youtube.com/watch?v=AE4ToMtTmz4)
 
 Deployed to [purescript-strangeloop-2016.surge.sh](https://purescript-strangeloop-2016.surge.sh/)
 
